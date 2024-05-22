@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target & Stop Loss Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Target & Stop Loss Finder</h1>
+        <div class="form-group">
+            <label for="indexType">Select Index Type:</label>
+            <select id="indexType">
+                <option value="25">Nifty</option>
+                <option value="15">BankNifty</option>
+                <option value="40">FinNifty</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="bp">Enter the price bought for:</label>
+            <input type="number" id="bp">
+        </div>
+        <div class="form-group">
+            <label for="lots">Enter No.of lots:</label>
+            <input type="number" id="lots">
+        </div>
+        <button onclick="calculate()">Calculate</button>
+        <div id="results"></div>
+    </div>
+    <script>
+        function calculate() {
+            const indexType = document.getElementById('indexType').value;
+            const bp = parseFloat(document.getElementById('bp').value);
+            const lots = parseInt(document.getElementById('lots').value);
+
+            if (isNaN(bp) || isNaN(lots)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+
+            const size = parseInt(indexType);
+            const tp = bp * lots * size;
+
+            const target = tp * 0.2;
+            const stopLoss = tp * 0.1;
+
+            document.getElementById('results').innerHTML = `
+                <div>
+                    <h2>Results</h2>
+                    <p>Price bought for: ${tp.toFixed(2)}</p>
+                    <p>Target 20%: +${target.toFixed(2)}</p>
+                    <p>Stop loss 10%: -${stopLoss.toFixed(2)}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
